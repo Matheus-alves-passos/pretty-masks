@@ -1,10 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.SceneManagement;
+using Cinemachine;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance;
+    public Rigidbody2D myBody;
+    public BoxCollider2D myCollider;
+    public Animator myAnim;
     public Rigidbody2D rb;
+    public GameObject painelDialogo;    
+
+   
 
     public float moveSpeed;
     // Start is called before the first frame update
@@ -17,5 +26,13 @@ public class Player : MonoBehaviour
     void Update()
     {
         rb.velocity = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * moveSpeed;
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (collision.gameObject.CompareTag("PC"))
+        {
+            painelDialogo.SetActive(true);
+        }
     }
 }
