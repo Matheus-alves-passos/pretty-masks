@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     public BoxCollider2D myCollider;
     public Animator myAnim;
     public Rigidbody2D rb;
-    public GameObject painelDialogo;    
+    public GameObject painelDialogo,painelCombate;    
 
    
 
@@ -25,6 +25,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(PC.Instance.onDialogue)
+        {
+            return;
+        }
         rb.velocity = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * moveSpeed;
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -34,5 +38,6 @@ public class Player : MonoBehaviour
         {
             painelDialogo.SetActive(true);
         }
+
     }
 }

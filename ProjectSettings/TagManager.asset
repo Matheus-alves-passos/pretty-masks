@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Room
   - sala
+  - PC
   layers:
   - Default
   - TransparentFX
