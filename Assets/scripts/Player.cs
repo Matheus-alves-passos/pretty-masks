@@ -11,33 +11,58 @@ public class Player : MonoBehaviour
     public BoxCollider2D myCollider;
     public Animator myAnim;
     public Rigidbody2D rb;
-    public GameObject painelDialogo,painelCombate;    
 
-   
+    public Enemy inimigoAtual;
+
+    public bool desistir;
+
+
 
     public float moveSpeed;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(PC.Instance.onDialogue)
+        if (desistir)
+        {
+            return;
+        }
+        if (PC.Instance.onDialogue)
+        {
+            return;
+        }
+
+        if (CombatManager.instance.onCombate)
         {
             return;
         }
         rb.velocity = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) * moveSpeed;
     }
+
+    public void Desistiu()
+    {
+        myAnim.Play("dead");
+        desistir = true;
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-        if (collision.gameObject.CompareTag("PC"))
+        if (collision.CompareTag("Pia"))
         {
-            painelDialogo.SetActive(true);
+            inimigoAtual = collision.gameObject.GetComponent<Enemy>();
+            CombatManager.instance.IniciarCombate();
         }
 
     }
+
+
 }
