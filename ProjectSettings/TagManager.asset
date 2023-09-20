@@ -8,6 +8,9 @@ TagManager:
   - sala
   - PC
   - Pia
+  - Dialogo1
+  - Dialogo2
+  - Dialogo3
   layers:
   - Default
   - TransparentFX

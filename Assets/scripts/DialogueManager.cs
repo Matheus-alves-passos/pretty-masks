@@ -4,20 +4,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class PC : MonoBehaviour
+public class DialogueManager : MonoBehaviour
 {
-    public static PC Instance;
+    public static DialogueManager Instance;
+
     public GameObject dialoguePanel;
+    public GameObject pressPanel;
     public TMP_Text dialogueText;
-    public string[] dialogue;
+    public string[] dialogue1, dialogue2, dialogue3, actualDialogue;
     private int index;
 
     public GameObject contButton;
     public float wordSpeed;
     public bool playerIsClose;
     public bool onDialogue;
+    public bool cont;
     public Image dialogueImage;
     public Sprite[] characterSprites;
+
     private void Awake()
     {
         Instance = this;
@@ -60,17 +64,30 @@ public class PC : MonoBehaviour
 
     IEnumerator Typing()
     {
-        string nome = dialogue[index].Split(new char[] { ' ' })[0];
+        string nome = actualDialogue[index].Split(new char[] { ' ' })[0];
         switch (nome)
         {
-            case "PC":
+            case "Talita":
                 dialogueImage.sprite = characterSprites[0];
                 break;
-            case "Voce":
+
+            case "Thomas":
                 dialogueImage.sprite = characterSprites[1];
                 break;
+
+            case "André":
+                dialogueImage.sprite = characterSprites[2];
+                break;
+
+            case "PC":
+                dialogueImage.sprite = characterSprites[3];
+                break;
+
+            case "M":
+                dialogueImage.sprite = characterSprites[4];
+                break;
         }
-        foreach (char letter in dialogue[index].ToCharArray())
+        foreach (char letter in actualDialogue[index].ToCharArray())
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(wordSpeed);
@@ -80,7 +97,7 @@ public class PC : MonoBehaviour
     public void NextLine()
     {
 
-        if (index < dialogue.Length - 1)
+        if (index < actualDialogue.Length - 1)
         {
             index++;
             dialogueText.text = "";
@@ -92,23 +109,5 @@ public class PC : MonoBehaviour
         }
 
     }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerIsClose = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerIsClose = false;
-            ZeroText();
-        }
-    }
-
 
 }
