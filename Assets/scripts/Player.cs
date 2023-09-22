@@ -23,18 +23,17 @@ public class Player : MonoBehaviour
 
 
     public float moveSpeed;
-    // Start is called before the first frame update
 
     private void Awake()
     {
         Instance = this;
     }
+
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()//instancias dos scripts e variaveis da animação
     {
         if (desistir)
@@ -74,7 +73,7 @@ public class Player : MonoBehaviour
         if (horizontalInput < 0)
             ChangeAnimationState("WalkEsquerda");
     }
-    void ChangeAnimationState(string newState)
+    void ChangeAnimationState(string newState)//mudar animação
     {
         if (currentState == newState)
             return;
@@ -87,8 +86,13 @@ public class Player : MonoBehaviour
         myAnim.Play("dead");
         desistir = true;
     }
-    private void OnTriggerEnter2D(Collider2D collision)//colisão com os objetos de dialogo 
+    private void OnTriggerEnter2D(Collider2D collision)//colisão com os objetos
     {
+        if (collision.CompareTag("Inimigo1")) //colisão com o inimigo
+        {
+            inimigoAtual = collision.gameObject.GetComponent<Enemy>();
+            CombatManager.instance.IniciarCombate();
+        }
         if (collision.CompareTag("Dialogo1"))
         {
             DialogueManager.Instance.playerIsClose = true;
@@ -124,7 +128,7 @@ public class Player : MonoBehaviour
             dialogo2 = false;
         }
         if (collision.CompareTag("Dialogo3"))
-        { 
+        {
             DialogueManager.Instance.playerIsClose = false;
             dialogo3 = false;
         }

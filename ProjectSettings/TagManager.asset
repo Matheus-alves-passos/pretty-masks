@@ -7,10 +7,10 @@ TagManager:
   - Room
   - sala
   - PC
-  - Pia
   - Dialogo1
   - Dialogo2
   - Dialogo3
+  - Inimigo1
   layers:
   - Default
   - TransparentFX

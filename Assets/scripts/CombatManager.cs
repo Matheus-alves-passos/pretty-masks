@@ -12,6 +12,7 @@ public class CombatManager : MonoBehaviour
     public GameObject painelCombate, painelAtaque, painelGameOver;
     public TMP_Text combateText, nomeInimigo;
     public Image inimigoImage, vidaInimigo, vidaPlayer, playerImage;
+
     //cinemachine camera atual que eu pego no script da room
     public CinemachineVirtualCamera cam;
 
@@ -43,9 +44,9 @@ public class CombatManager : MonoBehaviour
         inimigoImage.sprite = enemy.inimigoSprite;
         combateText.text = enemy.falas[0];
 
-    }
+    } //começar combate
 
-    public void PlayerDesistir()
+    public void PlayerDesistir() //botão desistir
     {
         painelCombate.SetActive(false);
         onCombate = false;
@@ -67,5 +68,5 @@ public class CombatManager : MonoBehaviour
         //espera pelo fim da animação
         yield return new WaitForSeconds(3);
         painelGameOver.SetActive(true);
-    }
+    }// animação de fim de jogo caso escolha desistir 
 }
