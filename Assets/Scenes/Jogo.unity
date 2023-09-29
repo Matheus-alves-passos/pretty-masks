@@ -9554,12 +9554,12 @@ MonoBehaviour:
   dialogue1:
   - Thalita - vai ca casa do caralho
   dialogue2:
-  - ssssssssss
+  - Thalita - ssssssssss
   dialogue3:
-  - ssssssssssssss
+  - Thalita - ssssssssssssss
   actualDialogue: []
   contButton: {fileID: 1972972649}
-  wordSpeed: 0.1
+  wordSpeed: 0.05
   playerIsClose: 0
   onDialogue: 0
   cont: 0

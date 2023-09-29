@@ -37,6 +37,7 @@ public class DialogueManager : MonoBehaviour
             }
             else
             {
+                actualDialogue = dialogue1;
                 dialoguePanel.SetActive(true);
                 StartCoroutine(Typing());
                 onDialogue = true;
@@ -67,7 +68,7 @@ public class DialogueManager : MonoBehaviour
         string nome = actualDialogue[index].Split(new char[] { ' ' })[0];
         switch (nome)
         {
-            case "Talita":
+            case "Thalita":
                 dialogueImage.sprite = characterSprites[0];
                 break;
 
