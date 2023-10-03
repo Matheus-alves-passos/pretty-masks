@@ -11,7 +11,7 @@ public class DialogueManager : MonoBehaviour
     public GameObject dialoguePanel;
     public GameObject pressPanel;
     public TMP_Text dialogueText;
-    public string[] dialogue1, dialogue2, dialogue3, actualDialogue;
+    public string[] dialogue1, dialogue2, dialogue3,dialogue4,dialogue5, actualDialogue;
     private int index;
 
     public GameObject contButton;
@@ -37,11 +37,37 @@ public class DialogueManager : MonoBehaviour
             }
             else
             {
-                actualDialogue = dialogue1;
+                if(Player.Instance.dialogo1 == true)
+                {
+                    actualDialogue = dialogue1;
+                }
+
+                if (Player.Instance.dialogo2 == true)
+                {
+                    actualDialogue = dialogue2;
+                }
+
+                if (Player.Instance.dialogo3 == true)
+                {
+                    actualDialogue = dialogue3;
+                }
+
+                if (Player.Instance.dialogo4 == true)
+                {
+                    actualDialogue = dialogue4;
+                }
+
+                if (Player.Instance.dialogo5 == true)
+                {
+                    actualDialogue = dialogue5;
+                }
                 dialoguePanel.SetActive(true);
                 StartCoroutine(Typing());
                 onDialogue = true;
+
+              
             }
+
         }
         if (onDialogue == true)
         {

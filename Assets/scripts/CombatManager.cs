@@ -9,7 +9,7 @@ public class CombatManager : MonoBehaviour
     public static CombatManager instance;
     public Player player;
     public Enemy enemy;
-    public GameObject painelCombate, painelAtaque, painelGameOver;
+    public GameObject painelCombate, painelAtaque, painelGameOver, transiPanel;
     public TMP_Text combateText, nomeInimigo;
     public Image inimigoImage, vidaInimigo, vidaPlayer, playerImage;
 
@@ -37,6 +37,7 @@ public class CombatManager : MonoBehaviour
 
     public void IniciarCombate()
     {
+        Player.Instance.moveSpeed = 0;
         painelCombate.SetActive(true);
         onCombate = true;
         enemy = player.inimigoAtual;
@@ -66,7 +67,8 @@ public class CombatManager : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
         //espera pelo fim da animação
-        yield return new WaitForSeconds(3);
+        transiPanel.SetActive(true);
+        yield return new WaitForSeconds(2);
         painelGameOver.SetActive(true);
     }// animação de fim de jogo caso escolha desistir 
 }

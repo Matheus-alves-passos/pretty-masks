@@ -11,6 +11,9 @@ TagManager:
   - Dialogo2
   - Dialogo3
   - Inimigo1
+  - sadPanel
+  - Dialogo4
+  - Dialogo5
   layers:
   - Default
   - TransparentFX
