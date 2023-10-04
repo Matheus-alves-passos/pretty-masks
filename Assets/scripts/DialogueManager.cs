@@ -9,7 +9,7 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager Instance;
 
     public GameObject dialoguePanel;
-    public GameObject pressPanel;
+    public GameObject pressPanel1, pressPanel2, pressPanel3, pressPanel4,   pressPanel5;
     public TMP_Text dialogueText;
     public string[] dialogue1, dialogue2, dialogue3,dialogue4,dialogue5, actualDialogue;
     private int index;
@@ -40,26 +40,31 @@ public class DialogueManager : MonoBehaviour
                 if(Player.Instance.dialogo1 == true)
                 {
                     actualDialogue = dialogue1;
+                    pressPanel1.SetActive(false);
                 }
 
                 if (Player.Instance.dialogo2 == true)
                 {
                     actualDialogue = dialogue2;
+                    pressPanel2.SetActive(false);
                 }
 
                 if (Player.Instance.dialogo3 == true)
                 {
                     actualDialogue = dialogue3;
+                    pressPanel3.SetActive(false);
                 }
 
                 if (Player.Instance.dialogo4 == true)
                 {
                     actualDialogue = dialogue4;
+                    pressPanel3.SetActive(false);
                 }
 
                 if (Player.Instance.dialogo5 == true)
                 {
                     actualDialogue = dialogue5;
+                    pressPanel5.SetActive(false);
                 }
                 dialoguePanel.SetActive(true);
                 StartCoroutine(Typing());
@@ -75,6 +80,15 @@ public class DialogueManager : MonoBehaviour
             {
                 StopAllCoroutines();
                 NextLine();
+            }
+
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                StopAllCoroutines();
+                dialoguePanel.SetActive(false);
+                Player.Instance.vidaPanel.fillAmount = 0;
+                Player.Instance.spriteSmile.sprite = Player.Instance.felizSprites[3];
+                CombatManager.instance.PlayerDesistir();
             }
 
         }

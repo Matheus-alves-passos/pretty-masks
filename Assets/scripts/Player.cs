@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
 
     public bool desistir;
     public bool dialogo1, dialogo2, dialogo3, dialogo4, dialogo5;
+    public GameObject entrarPanel;
 
     public Image sadPanel, vidaPanel;
     public Image spriteSmile;
@@ -31,6 +32,8 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        entrarPanel.SetActive(true);
+
     }
 
     void Start()
@@ -125,6 +128,7 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Dialogo1"))
         {
             DialogueManager.Instance.playerIsClose = true;
+            DialogueManager.Instance.pressPanel1.SetActive(true);
             dialogo1 = true;
             dialogo2 = false;
             dialogo3 = false;
@@ -134,6 +138,7 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Dialogo2"))
         {
             DialogueManager.Instance.playerIsClose = true;
+            DialogueManager.Instance.pressPanel2.SetActive(true);
             dialogo1 = false;
             dialogo2 = true;
             dialogo3 = false;
@@ -146,6 +151,7 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Dialogo3"))
         {
             DialogueManager.Instance.playerIsClose = true;
+            DialogueManager.Instance.pressPanel3.SetActive(true);
             dialogo1 = false;
             dialogo2 = false;
             dialogo3 = true;
@@ -159,6 +165,7 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Dialogo4"))
         {
             DialogueManager.Instance.playerIsClose = true;
+            DialogueManager.Instance.pressPanel4.SetActive(true);
             dialogo1 = false;
             dialogo2 = false;
             dialogo3 = false;
@@ -171,6 +178,7 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Dialogo5"))
         {
             DialogueManager.Instance.playerIsClose = true;
+            DialogueManager.Instance.pressPanel5.SetActive(true);
             dialogo1 = false;
             dialogo2 = false;
             dialogo3 = false;
@@ -196,26 +204,31 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Dialogo1"))
         {
             DialogueManager.Instance.playerIsClose = false;
+            DialogueManager.Instance.pressPanel1.SetActive(false);
             dialogo1 = false;
         }
         if (collision.CompareTag("Dialogo2"))
         {
             DialogueManager.Instance.playerIsClose = false;
+            DialogueManager.Instance.pressPanel2.SetActive(false);
             dialogo2 = false;
         }
         if (collision.CompareTag("Dialogo3"))
         {
             DialogueManager.Instance.playerIsClose = false;
+            DialogueManager.Instance.pressPanel3.SetActive(false);
             dialogo3 = false;
         }
         if (collision.CompareTag("Dialogo4"))
         {
             DialogueManager.Instance.playerIsClose = false;
+            DialogueManager.Instance.pressPanel4.SetActive(false);
             dialogo4 = false;
         }
         if (collision.CompareTag("Dialogo5"))
         {
             DialogueManager.Instance.playerIsClose = false;
+            DialogueManager.Instance.pressPanel5.SetActive(false);
             dialogo5 = false;
         }
     }
