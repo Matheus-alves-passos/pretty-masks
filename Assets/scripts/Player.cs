@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     public Enemy inimigoAtual;
 
     public bool desistir;
-    public bool dialogo1, dialogo2, dialogo3, dialogo4, dialogo5;
+    public bool dialogo1, dialogo2, dialogo3, dialogo4, dialogo5, dialogoPsi;
     public GameObject entrarPanel;
 
     public Image sadPanel, vidaPanel;
@@ -134,6 +134,7 @@ public class Player : MonoBehaviour
             dialogo3 = false;
             dialogo4 = false;
             dialogo5 = false;
+
         }
         if (collision.CompareTag("Dialogo2"))
         {

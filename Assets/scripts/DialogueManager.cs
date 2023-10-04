@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEditor.SearchService;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class DialogueManager : MonoBehaviour
     public GameObject dialoguePanel;
     public GameObject pressPanel1, pressPanel2, pressPanel3, pressPanel4,   pressPanel5;
     public TMP_Text dialogueText;
-    public string[] dialogue1, dialogue2, dialogue3,dialogue4,dialogue5, actualDialogue;
+    public string[] dialogue1, dialogue2, dialogue3,dialogue4,dialogue5,dialoguePsicologo, actualDialogue;
     private int index;
 
     public GameObject contButton;
@@ -66,6 +68,11 @@ public class DialogueManager : MonoBehaviour
                     actualDialogue = dialogue5;
                     pressPanel5.SetActive(false);
                 }
+
+                if (Player.Instance.dialogoPsi == true)
+                {
+                    actualDialogue = dialoguePsicologo;
+                }
                 dialoguePanel.SetActive(true);
                 StartCoroutine(Typing());
                 onDialogue = true;
@@ -92,6 +99,7 @@ public class DialogueManager : MonoBehaviour
             }
 
         }
+
     }
 
 
@@ -126,6 +134,9 @@ public class DialogueManager : MonoBehaviour
 
             case "M":
                 dialogueImage.sprite = characterSprites[4];
+                break;
+            case "Psicologo":
+                dialogueImage.sprite = characterSprites[5];
                 break;
         }
         foreach (char letter in actualDialogue[index].ToCharArray())
