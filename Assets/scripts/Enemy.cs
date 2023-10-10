@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
     public int IDinimigo;
     public string nome;
     public Sprite inimigoSprite;
-    public int vida;
+    public int vida, vidaMaxima;
     public int dano;
     public string[] falas;
     public bool vivo;
@@ -21,5 +21,15 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void tomarDano(int dano)
+    {
+        vida -= dano;
+        if(vida<= 0)
+        {
+            vida = 0;
+            vivo= false;
+        }
     }
 }

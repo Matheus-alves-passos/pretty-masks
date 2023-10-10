@@ -128,9 +128,9 @@ public class DialogueManager : MonoBehaviour
                 dialogueImage.sprite = characterSprites[2];
                 break;
 
-            case "PC":
+            case "NoobMaster69":
                 dialogueImage.sprite = characterSprites[3];
-                break;
+                break;  
 
             case "M":
                 dialogueImage.sprite = characterSprites[4];

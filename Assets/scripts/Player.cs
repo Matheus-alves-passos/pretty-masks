@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     public static Player Instance;
-    public Rigidbody2D myBody;
     public BoxCollider2D myCollider;
     public Animator myAnim;
 
@@ -21,9 +20,10 @@ public class Player : MonoBehaviour
 
     public Enemy inimigoAtual;
 
+
     public bool desistir;
     public bool dialogo1, dialogo2, dialogo3, dialogo4, dialogo5, dialogoPsi;
-    public GameObject entrarPanel;
+    public GameObject entrarPanel, windowsPanel, youtubePanel;
 
     public Image sadPanel, vidaPanel;
     public Image spriteSmile;
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-
+        vidaPanel.fillAmount = 0.7f;
     }
 
     void Update()//instancias dos scripts e variaveis da animação
@@ -54,6 +54,16 @@ public class Player : MonoBehaviour
         }
 
         if (CombatManager.instance.onCombate)
+        {
+            return;
+        }
+
+        if (CombatManager.instance.onCombateNoob)
+        {
+            return;
+        }
+
+        if(CombatManager.instance.onYoutube)
         {
             return;
         }
@@ -78,7 +88,7 @@ public class Player : MonoBehaviour
         }
 
         // cores da barra de vida
-        if (vidaPanel.fillAmount > 0.7f)
+        if (vidaPanel.fillAmount >= 0.7f)
         {
             vidaPanel.color = Color.green;
             spriteSmile.sprite = felizSprites[0];
@@ -100,6 +110,15 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void tomarDano(float dano)
+    {
+        vidaPanel.fillAmount = vidaPanel.fillAmount - dano;
+        if(vidaPanel.fillAmount <= 0)
+        {
+            CombatManager.instance.PlayerDesistir();
+        }
+    }
+
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + movimento * moveSpeed * Time.fixedDeltaTime);
@@ -118,12 +137,18 @@ public class Player : MonoBehaviour
         myAnim.Play("dead");
         desistir = true;
     }
+
+    public void verVideo()
+    {
+        youtubePanel.SetActive(true);
+        vidaPanel.fillAmount = vidaPanel.fillAmount + 0.3f;
+    }
     private void OnTriggerEnter2D(Collider2D collision)//colisão com os objetos
     {
         if (collision.CompareTag("Inimigo1")) //colisão com o inimigo
         {
             inimigoAtual = collision.gameObject.GetComponent<Enemy>();
-            CombatManager.instance.IniciarCombate();
+            windowsPanel.gameObject.SetActive(true);
         }
         if (collision.CompareTag("Dialogo1"))
         {
