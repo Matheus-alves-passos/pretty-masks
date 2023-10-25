@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 
 {
-    public GameObject painelMenu, painelCreditos;
+    public GameObject painelMenu, painelCreditos, passPanel;
     public AudioSource jukebox;
     public AudioClip musica, efeito;
     [SerializeField] private string nomeDoLevelDeJogo;
@@ -19,7 +19,7 @@ public class MenuManager : MonoBehaviour
     }
     public void Jogar()
     {
-        SceneManager.LoadScene(nomeDoLevelDeJogo);
+        StartCoroutine(passMenu());
     }
 
 
@@ -45,5 +45,12 @@ public class MenuManager : MonoBehaviour
     public void MinhaPagina()
     {
         Application.OpenURL("https://instagram.com/mathreur?igshid=OGQ5ZDc2ODk2ZA==");
+    }
+
+    IEnumerator passMenu()
+    {
+        passPanel.SetActive(true);
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(nomeDoLevelDeJogo);
     }
 }

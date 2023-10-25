@@ -14,6 +14,10 @@ TagManager:
   - sadPanel
   - Dialogo4
   - Dialogo5
+  - Especial
+  - geladeira
+  - pia
+  - Cama
   layers:
   - Default
   - TransparentFX

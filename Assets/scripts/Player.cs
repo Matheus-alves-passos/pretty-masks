@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
 using Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     public static Player Instance;
     public BoxCollider2D myCollider;
     public Animator myAnim;
+    public int playerId;
+
 
     public Rigidbody2D rb;
     public float moveSpeed;
@@ -20,10 +21,11 @@ public class Player : MonoBehaviour
 
     public Enemy inimigoAtual;
 
-
+    public bool luta;
+    public bool especial;
     public bool desistir;
     public bool dialogo1, dialogo2, dialogo3, dialogo4, dialogo5, dialogoPsi;
-    public GameObject entrarPanel, windowsPanel, youtubePanel;
+    public GameObject entrarPanel, windowsPanel, youtubePanel, especialSPR, scenePanel, trabalhoPanel;
 
     public Image sadPanel, vidaPanel;
     public Image spriteSmile;
@@ -63,11 +65,12 @@ public class Player : MonoBehaviour
             return;
         }
 
-        if(CombatManager.instance.onYoutube)
+        if (CombatManager.instance.onYoutube)
         {
             return;
         }
         // movimentação
+
         movimento.x = Input.GetAxisRaw("Horizontal");
         movimento.y = Input.GetAxisRaw("Vertical");
 
@@ -113,10 +116,16 @@ public class Player : MonoBehaviour
     public void tomarDano(float dano)
     {
         vidaPanel.fillAmount = vidaPanel.fillAmount - dano;
+        CombatManager.instance.vidaPlayer.fillAmount = vidaPanel.fillAmount;
         if(vidaPanel.fillAmount <= 0)
         {
             CombatManager.instance.PlayerDesistir();
         }
+    }
+
+    public void sceneTransi()
+    {
+        SceneManager.LoadScene(2);
     }
 
     private void FixedUpdate()
@@ -138,17 +147,32 @@ public class Player : MonoBehaviour
         desistir = true;
     }
 
-    public void verVideo()
-    {
-        youtubePanel.SetActive(true);
-        vidaPanel.fillAmount = vidaPanel.fillAmount + 0.3f;
-    }
     private void OnTriggerEnter2D(Collider2D collision)//colisão com os objetos
     {
-        if (collision.CompareTag("Inimigo1")) //colisão com o inimigo
+        if (collision.CompareTag("Cama"))
         {
-            inimigoAtual = collision.gameObject.GetComponent<Enemy>();
-            windowsPanel.gameObject.SetActive(true);
+            if (luta == false)
+            {
+                trabalhoPanel.gameObject.SetActive(true);
+            }
+            if (luta == true)
+            {
+                scenePanel.gameObject.SetActive(true);
+            }
+        }
+        if (collision.CompareTag("Especial"))
+        {
+            especial = true;
+            especialSPR.SetActive(false);
+            cameraShake.Instance.CamShake();
+        }
+        if (collision.CompareTag("Inimigo1"))
+        { //colisão com o inimigo
+            if (luta == false)
+            {
+                inimigoAtual = collision.gameObject.GetComponent<Enemy>();
+                windowsPanel.gameObject.SetActive(true);
+            }
         }
         if (collision.CompareTag("Dialogo1"))
         {
@@ -227,6 +251,17 @@ public class Player : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)//saindo da colisão com os objetos de dialogo
     {
+        if (collision.CompareTag("Cama"))
+        {
+            if (luta == false)
+            {
+                trabalhoPanel.gameObject.SetActive(false);
+            }
+            if (luta == true)
+            {
+                scenePanel.gameObject.SetActive(false);
+            }
+        }
         if (collision.CompareTag("Dialogo1"))
         {
             DialogueManager.Instance.playerIsClose = false;
