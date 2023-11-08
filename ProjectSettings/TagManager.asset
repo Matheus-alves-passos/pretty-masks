@@ -18,6 +18,17 @@ TagManager:
   - geladeira
   - pia
   - Cama
+  - Dialogo6
+  - Dialogo7
+  - Dialogo8
+  - Dialogo9
+  - Dialogo10
+  - Dialogo11
+  - irCafe
+  - animacaoCombate
+  - Porta
+  - Tali
+  - Trabalho
   layers:
   - Default
   - TransparentFX
