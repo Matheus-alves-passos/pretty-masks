@@ -32,7 +32,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && playerIsClose && onDialogue == false)
         {
-            if (dialoguePanel.activeInHierarchy)
+            if (dialoguePanel.activeInHierarchy)      
             {
                 ZeroText();
             }

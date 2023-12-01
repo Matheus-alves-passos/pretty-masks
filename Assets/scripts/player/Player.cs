@@ -24,14 +24,14 @@ public class Player : MonoBehaviour
 
     public Enemy inimigoAtual;
 
-    
-    public bool choroTali,cafe;
+    public bool caiu;
+    public bool choroTali, cafe;
     public bool animaTalita;
     public bool luta;
     public bool especial;
     public bool desistir;
-    public bool dialogo1, dialogo2, dialogo3, dialogo4, dialogo5,dialogo6,dialogo7, dialogo8,dialogo9,dialogo10,dialogo11, dialogoPsi;
-    public GameObject entrarPanel,saidaPanel, windowsPanel, youtubePanel, especialSPR, scenePanel, trabalhoPanel,pausePanel, especialPanel;
+    public bool dialogo1, dialogo2, dialogo3, dialogo4, dialogo5, dialogo6, dialogo7, dialogo8, dialogo9, dialogo10, dialogo11, dialogoPsi;
+    public GameObject entrarPanel, saidaPanel, windowsPanel, youtubePanel, especialSPR, scenePanel, trabalhoPanel, pausePanel, especialPanel;
 
     public Image sadPanel, vidaPanel;
     public Image spriteSmile;
@@ -41,7 +41,6 @@ public class Player : MonoBehaviour
     {
         Instance = this;
         entrarPanel.SetActive(true);
-
     }
 
     void Start()
@@ -49,7 +48,7 @@ public class Player : MonoBehaviour
         switch (playerId)
         {
             case 0:
-            vidaPanel.fillAmount = 0.7f;
+                vidaPanel.fillAmount = 0.7f;
                 break;
 
             case 1:
@@ -63,8 +62,25 @@ public class Player : MonoBehaviour
                     StartCoroutine("chorandoTalita");
                 }
                 break;
+
+            case 3:
+                vidaPanel.fillAmount = 1;
+                break;
+
+            case 4:
+                vidaPanel.fillAmount = 1;
+                PsicoManager.Instanci.chamarPsico();
+                break;
+            case 5:
+                vidaPanel.fillAmount = 1;
+                PsicoManager.Instanci.chamarPsico();
+                break;
+            case 6:
+                vidaPanel.fillAmount = 1;
+                PsicoManager.Instanci.chamarPsico();
+                break;
         }
-        
+
     }
 
     void Update()//instancias dos scripts e variaveis da animação
@@ -82,6 +98,12 @@ public class Player : MonoBehaviour
                 pausePanel.SetActive(false);
                 Time.timeScale = 1;
             }
+        }
+
+
+        if (PsicoManager.Instanci.psi == true)
+        {
+            return;
         }
 
         if (choroTali == true)
@@ -120,7 +142,7 @@ public class Player : MonoBehaviour
         }
 
 
-        if ( DialogueManager.Instance.onDialogue == false)
+        if (DialogueManager.Instance.onDialogue == false)
         {
             moveSpeed = 3;
         }
@@ -173,7 +195,7 @@ public class Player : MonoBehaviour
     {
         vidaPanel.fillAmount = vidaPanel.fillAmount - dano;
         CombatManager.instance.vidaPlayer.fillAmount = vidaPanel.fillAmount;
-        if(vidaPanel.fillAmount <= 0)
+        if (vidaPanel.fillAmount <= 0)
         {
             CombatManager.instance.PlayerDesistir();
         }
@@ -205,6 +227,11 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)//colisão com os objetos
     {
+        if (collision.CompareTag("Psicologo"))
+        {
+            PsicoManager.Instanci.chamarPsico();
+        }
+
         if (collision.CompareTag("Cama"))
         {
             if (luta == false)
@@ -228,7 +255,16 @@ public class Player : MonoBehaviour
             if (luta == false)
             {
                 inimigoAtual = collision.gameObject.GetComponent<Enemy>();
-                windowsPanel.gameObject.SetActive(true);
+                switch (playerId)
+                {
+                    case 0:
+                        windowsPanel.gameObject.SetActive(true);
+                        break;
+
+                    case 2:
+                        CombatManager.instance.startCombateNoob();
+                        break;
+                }
             }
         }
         if (collision.CompareTag("Dialogo1"))
@@ -443,7 +479,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if(collision.CompareTag("irCafe"))
+        if (collision.CompareTag("irCafe"))
         {
             StartCoroutine(irRua());
         }
@@ -459,10 +495,19 @@ public class Player : MonoBehaviour
             StartCoroutine(talitaCombate());
         }
 
-        if(collision.CompareTag("Trabalho"))
+        if (collision.CompareTag("Trabalho"))
         {
             StartCoroutine(trabalhoTomas());
         }
+
+        if (collision.CompareTag("sairTrabalho"))
+        {
+            if (luta == true)
+            {
+                StartCoroutine(sairTrabalho());
+            }
+        }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)//saindo da colisão com os objetos de dialogo
@@ -559,7 +604,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         CombatManager.instance.cam.m_Lens.OrthographicSize = 5;
         CombatManager.instance.cam.Follow = player.transform;
-        
+
     }
     IEnumerator falaEspecial()
     {
@@ -581,12 +626,16 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         saidaPanel.SetActive(false);
+        moveSpeed = 1;
         myAnim.Play("derrubarCafe");
+        yield return new WaitForSeconds(2);
         moveSpeed = 0;
-        yield return new WaitForSeconds(5);
+        caiu = true;
+        yield return new WaitForSeconds(0.5f);
         saidaPanel.SetActive(true);
         entrarPanel.SetActive(false);
         yield return new WaitForSeconds(1);
+        caiu = false;
         CombatManager.instance.IniciarCombate();
         yield return new WaitForSeconds(1);
         entrarPanel.SetActive(true);
@@ -600,5 +649,13 @@ public class Player : MonoBehaviour
         SceneManager.LoadScene(5);
 
     }
+
+    IEnumerator sairTrabalho()
+    {
+        saidaPanel.SetActive(true);
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(6);
+    }
+
 }
 

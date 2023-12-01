@@ -29,6 +29,9 @@ TagManager:
   - Porta
   - Tali
   - Trabalho
+  - sairTrabalho
+  - camaDes
+  - Psicologo
   layers:
   - Default
   - TransparentFX

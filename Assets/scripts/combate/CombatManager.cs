@@ -21,6 +21,8 @@ public class CombatManager : MonoBehaviour
     public Button ataqueButton1, ataqueButton2, ataqueButton3, ataqueButton4;
     public TMP_Text nomeAtaque1, nomeAtaque2, nomeAtaque3, nomeAtaque4;
 
+    public int curas;
+
     public Image spriteSmile;
     //cinemachine camera atual que eu pego no script da room
     public CinemachineVirtualCamera cam;
@@ -47,6 +49,10 @@ public class CombatManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Player.Instance.especial == true)
+        {
+            pegouEspecial = true;
+        }
         if (fear == true)
         {
             ataqueButton1.GetComponent<Image>().sprite = spriteButtonAtaque[1];
@@ -74,6 +80,11 @@ public class CombatManager : MonoBehaviour
         if (Player.Instance.especial == true && fear == false)
         {
             ataqueButton4.interactable = true;
+            ataqueButton4.GetComponent<Image>().sprite = spriteButtonAtaque[0];
+        }
+        if(Player.Instance.especial == false)
+        {
+            ataqueButton4.interactable = false;
         }
         if (fireBall == true && fear == false)
         {
@@ -106,18 +117,25 @@ public class CombatManager : MonoBehaviour
         ataqueButton4.interactable = false;
         switch (Player.Instance.playerId)
         {
-            case 0:
+            case 0 or 4:
                 nomeAtaque1.text = "Arma a lazer";
                 nomeAtaque2.text = "Bola de fogo";
                 nomeAtaque3.text = "Recomponha-se";
                 nomeAtaque4.text = "100 mil companheiros!!";
                 break;
 
-            case 1:
+            case 1 or 5:
                 nomeAtaque1.text = "Docinho e quentinho";
                 nomeAtaque2.text = "Hora do show";
                 nomeAtaque3.text = "Você está sob o holofote";
                 nomeAtaque4.text = "Patas da furia!!";
+                break;
+
+            case 2 or 6:
+                nomeAtaque1.text = "Papelada";
+                nomeAtaque2.text = "Inutil sendo util ";
+                nomeAtaque3.text = "Lembre-se dela";
+                nomeAtaque4.text = "Stimtoy";
                 break;
         }
         StartCoroutine(fundoTextoSkip());
@@ -199,7 +217,7 @@ public class CombatManager : MonoBehaviour
             if (rng < 5)
             {
                 StartCoroutine(ataque2SPR());
-                vidaInimigo.fillAmount = vidaInimigo.fillAmount - 0.15f;
+                vidaInimigo.fillAmount = vidaInimigo.fillAmount - 0.25f;
             }
             else
             {
@@ -213,7 +231,7 @@ public class CombatManager : MonoBehaviour
             if (rng < 2)
             {
                 StartCoroutine(ataque2SPR());
-                vidaInimigo.fillAmount = vidaInimigo.fillAmount - 0.15f;
+                vidaInimigo.fillAmount = vidaInimigo.fillAmount - 0.25f;
             }
             else
             {
@@ -234,7 +252,7 @@ public class CombatManager : MonoBehaviour
         if (vidaPlayer.fillAmount >= 0.9f)
         {
             StartCoroutine(ataque4SPR());
-            vidaInimigo.fillAmount = vidaInimigo.fillAmount - 0.15f;
+            vidaInimigo.fillAmount = vidaInimigo.fillAmount - 0.55f;
         }
 
         if (vidaPlayer.fillAmount >= 0.6f && vidaPlayer.fillAmount < 0.9f)
@@ -243,7 +261,7 @@ public class CombatManager : MonoBehaviour
             if (rng < 7)
             {
                 StartCoroutine(ataque4SPR());
-                vidaInimigo.fillAmount = vidaInimigo.fillAmount - 0.15f;
+                vidaInimigo.fillAmount = vidaInimigo.fillAmount - 0.55f;
             }
             else
             {
@@ -257,7 +275,7 @@ public class CombatManager : MonoBehaviour
             if (rng < 4)
             {
                 StartCoroutine(ataque4SPR());
-                vidaInimigo.fillAmount = vidaInimigo.fillAmount - 0.15f;
+                vidaInimigo.fillAmount = vidaInimigo.fillAmount - 0.55f;
             }
             else
             {
@@ -346,6 +364,44 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    public void ataqueInimigo3()
+    {
+        int rnd = Random.Range(0, 4);
+        switch (rnd)
+        {
+            case 0:
+                Player.Instance.tomarDano(0.08f);
+                combateText.color = Color.red;
+                painelTexto.SetActive(true);
+                combateText.text = "Celular abre um monte de abas sozinho, te deixando confuso";
+                StartCoroutine(passarTextoInimigo());
+                break;
+            case 1:
+                Player.Instance.tomarDano(0.15f);
+                combateText.color = Color.red;
+                painelTexto.SetActive(true);
+                combateText.text = "Aparecem anuncios de jogos deixando voce distraido";
+                StartCoroutine(passarTextoInimigo());
+                break;
+            case 2:
+                combateText.color = Color.red;
+                painelTexto.SetActive(true);
+                combateText.text = "Aparece uma mensagem do seu chefe falando que esta com relatorios atrasados";
+                ataqueButton1.interactable = false;
+                ataqueButton2.interactable = false;
+                ataqueButton4.interactable = false;
+                fear = true;
+                StartCoroutine(passarTextoInimigo());
+                break;
+            case 3:
+                Player.Instance.tomarDano(0.10f);
+                combateText.color = Color.red;
+                painelTexto.SetActive(true);
+                combateText.text = "Celular esta carregado, tendo muito tempo pára perder";
+                StartCoroutine(passarTextoInimigo());
+                break;
+        }
+    }
     IEnumerator missAtaque(int erro)
     {
         switch (erro)
@@ -358,7 +414,6 @@ public class CombatManager : MonoBehaviour
                 combateText.text = "Voce ficou nervoso e acabou errando";
                 break;
         }
-
         painelTexto.SetActive(true);
         yield return new WaitForSeconds(2);
         painelTexto.SetActive(false);
@@ -370,6 +425,10 @@ public class CombatManager : MonoBehaviour
             case 1:
                 ataqueInimigo2();
                 break;
+            case 2:
+                ataqueInimigo3();
+                break;
+
         }
 
     }
@@ -415,8 +474,15 @@ public class CombatManager : MonoBehaviour
             case 1:
                 combateText.text = "Você consegiu controlar a crise e se acalmar!!";
                 break;
+            case 2:
+                combateText.text = "Você consegue vencer a distração e volta ao trabalho!!";
+                break;
+            case 4:
+                combateText.text = "Você supera seus medos e se sente melhor consigo mesmo";
+                break;
+
         }
-        
+
         painelTexto.SetActive(true);
         yield return new WaitForSeconds(5);
         Player.Instance.moveSpeed = 3;
@@ -436,13 +502,25 @@ public class CombatManager : MonoBehaviour
                 yield return new WaitForSeconds(1);
                 SceneManager.LoadScene(4);
                 break;
+
+            case 4:
+                SceneManager.LoadScene(7);
+                break;
+
+            case 5:
+                SceneManager.LoadScene(8);
+                break;
+
+            case 6:
+                SceneManager.LoadScene(1);
+                break;
         }
     }
     IEnumerator ataque1SPR()
     {
         switch (Player.Instance.playerId)
         {
-            case 0:
+            case 0 or 4:
                 combateText.color = Color.white;
                 combateText.text = "Você atirou com sua pistola a lazer!!";
                 painelTexto.SetActive(true);
@@ -462,9 +540,9 @@ public class CombatManager : MonoBehaviour
                 yield return new WaitForSeconds(2);
                 break;
 
-            case 1:
+            case 1 or 5:
                 combateText.color = Color.white;
-                combateText.text = "Você joga um garrafa de café nela";
+                combateText.text = "Você joga um caneca de café nela";
                 painelTexto.SetActive(true);
                 SPRataque1.SetActive(true);
                 yield return new WaitForSeconds(0.5f);
@@ -482,6 +560,26 @@ public class CombatManager : MonoBehaviour
                 yield return new WaitForSeconds(2);
                 break;
 
+            case 2 or 6:
+                combateText.color = Color.white;
+                combateText.text = "Voce lança uma chuva de papel que cortam o inimigo";
+                painelTexto.SetActive(true);
+                SPRataque1.SetActive(true);
+                yield return new WaitForSeconds(0.5f);
+                enemyAnimator.Play("danoInimigo");
+                yield return new WaitForSeconds(0.5f);
+                enemyAnimator.Play("paradoInimigo");
+                SPRataque1.SetActive(false);
+                fireBall = true;
+                yield return new WaitForSeconds(2);
+                painelTexto.SetActive(false);
+                if (vidaInimigo.fillAmount > 0)
+                {
+                    ataqueInimigo3();
+                }
+                yield return new WaitForSeconds(2);
+                break;
+
         }
 
     }
@@ -490,9 +588,9 @@ public class CombatManager : MonoBehaviour
     {
         switch (Player.Instance.playerId)
         {
-            case 0:
+            case 0 or 4:
                 combateText.color = Color.white;
-                combateText.text = "Você atirou uma bola de fogo!!";
+                combateText.text = "Voce lança uma bola de fogo";
                 painelTexto.SetActive(true);
                 SPRataque2.SetActive(true);
                 yield return new WaitForSeconds(0.5f);
@@ -510,7 +608,7 @@ public class CombatManager : MonoBehaviour
                 yield return new WaitForSeconds(2);
                 break;
 
-            case 1:
+            case 1 or 5:
                 combateText.color = Color.white;
                 combateText.text = "Você saca uma guitarra e ataca com notas musicais";
                 painelTexto.SetActive(true);
@@ -530,6 +628,26 @@ public class CombatManager : MonoBehaviour
                 yield return new WaitForSeconds(2);
                 break;
 
+            case 2 or 6:
+                combateText.color = Color.white;
+                combateText.text = "Voce lança churikens de papel";
+                painelTexto.SetActive(true);
+                SPRataque2.SetActive(true);
+                yield return new WaitForSeconds(0.5f);
+                enemyAnimator.Play("danoInimigo");
+                yield return new WaitForSeconds(0.5f);
+                enemyAnimator.Play("paradoInimigo");
+                SPRataque2.SetActive(false);
+                fireBall = false;
+                yield return new WaitForSeconds(2);
+                painelTexto.SetActive(false);
+                if (vidaInimigo.fillAmount > 0)
+                {
+                    ataqueInimigo3();
+                }
+                yield return new WaitForSeconds(2);
+                break;
+
 
         }
     }
@@ -538,7 +656,7 @@ public class CombatManager : MonoBehaviour
     {
         switch (Player.Instance.playerId)
         {
-            case 0:
+            case 0 or 4:
                 painelTexto.SetActive(true);
                 combateText.color = Color.green;
                 combateText.text = "Você respira fundo e afasta esses pensamentos";
@@ -548,7 +666,12 @@ public class CombatManager : MonoBehaviour
 
                 if (vidaPlayer.fillAmount < 0.5f)
                 {
-                    Player.Instance.tomarDano(-0.3f);
+                    if(curas <= 1)
+                    {
+                        curas++;
+                        Player.Instance.tomarDano(-0.3f);
+                    }
+                    
                 }
                 yield return new WaitForSeconds(2);
                 ataqueButton1.interactable = true;
@@ -564,7 +687,7 @@ public class CombatManager : MonoBehaviour
                 yield return new WaitForSeconds(2);
                 break;
 
-            case 1:
+            case 1 or 5:
                 painelTexto.SetActive(true);
                 combateText.color = Color.green;
                 combateText.text = "Você se recompoe após lembrar que você e a unica que tem que saber de si mesma";
@@ -574,7 +697,12 @@ public class CombatManager : MonoBehaviour
 
                 if (vidaPlayer.fillAmount < 0.5f)
                 {
-                    Player.Instance.tomarDano(-0.3f);
+                    if(curas <= 4)
+                    {
+                        curas++;
+                        Player.Instance.tomarDano(-0.3f);
+                    }
+                    
                 }
                 yield return new WaitForSeconds(2);
                 ataqueButton1.interactable = true;
@@ -590,6 +718,37 @@ public class CombatManager : MonoBehaviour
                 yield return new WaitForSeconds(2);
                 break;
 
+            case 2 or 6:
+                painelTexto.SetActive(true);
+                combateText.color = Color.green;
+                combateText.text = "Voce lembra de sua amiga, se sentindo acolhido e amado";
+                SPRataque3.SetActive(true);
+                yield return new WaitForSeconds(1);
+                SPRataque3.SetActive(false);
+
+                if (vidaPlayer.fillAmount < 0.5f)
+                {
+                    if(curas <= 4)
+                    {
+                        curas++;
+                        Player.Instance.tomarDano(-0.3f);
+                    }
+                    
+                }
+                yield return new WaitForSeconds(2);
+                ataqueButton1.interactable = true;
+                ataqueButton2.interactable = true;
+                fireBall = true;
+                fear = false;
+                painelTexto.SetActive(false);
+
+                if (vidaInimigo.fillAmount > 0)
+                {
+                    ataqueInimigo3();
+                }
+                yield return new WaitForSeconds(2);
+                break;
+
 
 
         }
@@ -600,7 +759,7 @@ public class CombatManager : MonoBehaviour
     {
         switch (Player.Instance.playerId)
         {
-            case 0:
+            case 0 or 4:
                 Player.Instance.especial = false;
                 combateText.color = Color.white;
                 combateText.text = "Você lança sua placa de 100k de inscritos!!";
@@ -622,7 +781,7 @@ public class CombatManager : MonoBehaviour
                 yield return new WaitForSeconds(2);
                 break;
 
-            case 1:
+            case 1 or 5:
                 Player.Instance.especial = false;
                 combateText.color = Color.white;
                 combateText.text = "Você transforma sua mão em uma para de gato e atira uma bola de ar";
@@ -640,6 +799,28 @@ public class CombatManager : MonoBehaviour
                 if (vidaInimigo.fillAmount > 0)
                 {
                     ataqueInimigo2();
+                }
+                yield return new WaitForSeconds(2);
+                break;
+
+            case 2 or 6:
+                Player.Instance.especial = false;
+                combateText.color = Color.white;
+                combateText.text = "Voce desmonta sua caneta";
+                painelTexto.SetActive(true);
+                SPRataque4.SetActive(true);
+                yield return new WaitForSeconds(0.5f);
+                enemyAnimator.Play("danoInimigo");
+                yield return new WaitForSeconds(0.5f);
+                enemyAnimator.Play("paradoInimigo");
+                SPRataque4.SetActive(false);
+                yield return new WaitForSeconds(2);
+                painelTexto.SetActive(false);
+                pegouEspecial = false;
+                fireBall = true;
+                if (vidaInimigo.fillAmount > 0)
+                {
+                    ataqueInimigo3();
                 }
                 yield return new WaitForSeconds(2);
                 break;
@@ -675,11 +856,25 @@ public class CombatManager : MonoBehaviour
         onCombateNoob = true;
         painelWindows.SetActive(false);
         painelTwitch.SetActive(true);
-        for (int i = 0; i < 21; i++)
+        switch (Player.Instance.playerId)
         {
-            painelTwitch.GetComponent<Image>().sprite = noobCutScene[i];
-            yield return new WaitForSeconds(2);
+            case 0:
+                for (int i = 0; i < 21; i++)
+                {
+                    painelTwitch.GetComponent<Image>().sprite = noobCutScene[i];
+                    yield return new WaitForSeconds(2);
 
+                }
+                break;
+
+            case 2:
+                for (int i = 0; i < 3; i++)
+                {
+                    painelTwitch.GetComponent<Image>().sprite = noobCutScene[i];
+                    yield return new WaitForSeconds(2);
+
+                }
+                break;
         }
         saidaPanel.SetActive(true);
         entradaPanel.SetActive(false);
